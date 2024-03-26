@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">RUET Pay</string>
     <string name="edu_mail">ruet.ac.bd</string>
+    <string name="student_edu_mail">@student.ruet.ac.bd</string>
 </resources>

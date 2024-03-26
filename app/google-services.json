@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "354286708188",
+    "project_id": "ruet-pay",
+    "storage_bucket": "ruet-pay.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:354286708188:android:d9e6cdf785667ffbffdb19",
+        "android_client_info": {
+          "package_name": "com.ruet.pay"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxXMY0AKlf3sNovyBXcQbiXZnLUOx8mRY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
