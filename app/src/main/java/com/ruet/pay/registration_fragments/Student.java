@@ -94,58 +94,60 @@ public class Student extends Fragment {
         });
 
         Continue.setOnClickListener(view -> {
-
             //Network check
             if(((ConnectivityManager) getContext()
                     .getSystemService(Context.CONNECTIVITY_SERVICE))
-                    .getActiveNetworkInfo() != null){}
+                    .getActiveNetworkInfo() != null){
+
+                String tempemail = register_email.getText().toString().trim();
+                if (tempemail.length() != 7) {
+                    email_layout.setError("Enter your 7 digit Roll number ");
+                } else {
+                    reg_email = register_email.getText().toString().trim() + email_layout.getSuffixText();
+                    reg_pass = register_pass1.getText().toString();
+                    if (reg_pass.equals(register_pass2.getText().toString()) ){
+                        if (reg_pass.length() >= 6) {
+                            rootView.findViewById(R.id.pb).setVisibility(View.VISIBLE);
+
+                            mAuth.createUserWithEmailAndPassword(reg_email,reg_pass).addOnCompleteListener(task -> {
+                                if (task.isSuccessful()){
+                                    mAuth.getInstance().getCurrentUser().delete();
+
+                                    OTPDialog otpverify = new OTPDialog(getContext(), reg_email, reg_pass);
+                                    otpverify.setCancelable(false);
+                                    rootView.findViewById(R.id.pb).setVisibility(View.GONE);
+                                    otpverify.show();
+                                }
+                                else{
+                                    rootView.findViewById(R.id.pb).setVisibility(View.GONE);
+                                    if (task.getException() instanceof FirebaseAuthUserCollisionException){
+                                        email_layout.setError("Account Exists! Please go back and Sign in with your Password.");
+                                    }
+                                    else if (task.getException() instanceof FirebaseNetworkException || task.getException() instanceof NetworkErrorException){
+                                        Intent nointernet = new Intent(getContext(), NoInternet.class);
+                                        startActivity(nointernet);
+                                    }
+                                    else {
+                                        Toast.makeText(getContext(),"Error: "+task.getException().getMessage(),Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
+
+                        }
+                        else {
+                            pass_layout1.setError("Password need to be at least 6 character! ");
+                            pass_layout2.setError("Password need to be at least 6 character! ");
+                        }
+                    }
+                    else {
+                        pass_layout1.setError("Passwords not Matched! ");
+                        pass_layout2.setError("Passwords not Matched! ");
+                    }
+                }
+            }
             else{
                 Intent nointernet = new Intent(getContext(), NoInternet.class);
                 startActivity(nointernet);
-            }
-            String tempemail = register_email.getText().toString().trim();
-            if (tempemail.length() != 7) {
-                email_layout.setError("Enter your 7 digit Roll number ");
-            } else {
-                email_layout.setError(null); // Clear any previous error message
-            }
-
-            reg_email = register_email.getText().toString().trim() + email_layout.getSuffixText();
-            reg_pass = register_pass1.getText().toString().trim();
-            if (reg_pass.equals(register_pass2.getText().toString().trim()) ){
-                if (reg_pass.length() >= 6) {
-
-                    mAuth.createUserWithEmailAndPassword(reg_email,reg_pass).addOnCompleteListener(task -> {
-                        if (task.isSuccessful()){
-                            mAuth.getInstance().getCurrentUser().delete();
-
-                            OTPDialog otpverify = new OTPDialog(getContext(), reg_email, reg_pass,getContext());
-                            otpverify.setCancelable(false);
-                            otpverify.show();
-                        }
-                        else{
-                            if (task.getException() instanceof FirebaseAuthUserCollisionException){
-                                email_layout.setError("Account Exists! Please go back and Sign in with your Password.");
-                            }
-                            else if (task.getException() instanceof FirebaseNetworkException || task.getException() instanceof NetworkErrorException){
-                                Intent nointernet = new Intent(getContext(), NoInternet.class);
-                                startActivity(nointernet);
-                            }
-                            else {
-                                Toast.makeText(getContext(),"Error: "+task.getException().getMessage(),Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
-
-                }
-                else {
-                    pass_layout1.setError("Password need to be at least 6 character! ");
-                    pass_layout2.setError("Password need to be at least 6 character! ");
-                }
-            }
-            else {
-                pass_layout1.setError("Passwords not Matched! ");
-                pass_layout2.setError("Passwords not Matched! ");
             }
         });
 

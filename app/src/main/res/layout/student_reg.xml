@@ -36,6 +36,7 @@
                 android:orientation="vertical"
                 android:layout_marginTop="150dp"
                 android:layout_marginBottom="50dp"
+                android:fitsSystemWindows="true"
                 >
                 <TextView
                     android:layout_width="match_parent"
@@ -163,9 +164,9 @@
                         android:id="@+id/department"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textAutoCorrect"
+                        android:inputType="none"
                         android:textColor="@color/black"
-                        android:enabled="false"/>
+                        />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -188,6 +189,13 @@
                         android:textColor="@color/black"
                         android:enabled="false"/>
                 </com.google.android.material.textfield.TextInputLayout>
+                <ProgressBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/pb"
+                    android:visibility="gone"
+                    android:layout_gravity="center"
+                    />
 
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/submit"
@@ -200,7 +208,7 @@
                     android:foreground="?attr/selectableItemBackground"
                     app:lottie_autoPlay="true"
                     app:lottie_loop="false"
-                    app:lottie_url="https://lottie.host/d95191f1-0c5f-4481-97ad-a7a6a697a023/4JehBSNvIb.json" />
+                    app:lottie_rawRes="@raw/submit" />
 
 
             </LinearLayout>

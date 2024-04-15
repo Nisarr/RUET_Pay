@@ -44,18 +44,18 @@ public class OTPDialog extends Dialog {
     int selectPosition = 0, code;
     private final String Email, Pass;
     Context context;
-    public OTPDialog(@NonNull Context context, String Email, String Pass, Context contexts) {
+    public OTPDialog(@NonNull Context context, String Email, String Pass) {
         super(context);
         this.Email = Email;
         this.Pass = Pass;
-        this.context = contexts;
+        this.context = context;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Objects.requireNonNull(getWindow()).setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-        getWindow().setBackgroundDrawable(new ColorDrawable(getContext().getResources().getColor(android.R.color.transparent)));
+        getWindow().setBackgroundDrawable(new ColorDrawable(context.getResources().getColor(android.R.color.transparent)));
         setContentView(R.layout.otpdialog);
 
         code = sendotp(Email, context);
@@ -87,21 +87,20 @@ public class OTPDialog extends Dialog {
                 code = sendotp(Email, context);
                 startCountDownTimer();
             }
-            else Toast.makeText(getContext(), "Wait! Until you can send another Code.",Toast.LENGTH_SHORT).show();
+            else Toast.makeText(context, "Wait! Until you can send another Code.",Toast.LENGTH_SHORT).show();
         });
 
         verifybtn.setOnClickListener(view -> {
             String OTP = otp1.getText().toString() + otp2.getText().toString() + otp3.getText().toString() + otp4.getText().toString();
             if (OTP.equals(String.valueOf(code))){
-                Intent intent = new Intent(getContext(), Student_Reg.class);
+                Intent intent = new Intent(context, Student_Reg.class);
                 intent.putExtra("Email", Email);
                 intent.putExtra("Pass", Pass);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                getContext().startActivity(intent);
+                context.startActivity(intent);
                 dismiss();
             }
             else{
-                Toast.makeText(getContext(),"OTP not Matched.\nVerification Error!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(context,"OTP not Matched.\nVerification Error!",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -138,7 +137,7 @@ public class OTPDialog extends Dialog {
 
     private void showKeyboard (EditText otp){
         otp.requestFocus();
-        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.showSoftInput(otp, InputMethodManager.SHOW_IMPLICIT);
     }
 
@@ -157,7 +156,7 @@ public class OTPDialog extends Dialog {
             public void onFinish() {
                 resendEnable = true;
                 resendbtn.setText("Resend Code");
-                resendbtn.setTextColor(getContext().getResources().getColor(android.R.color.holo_blue_dark));
+                resendbtn.setTextColor(context.getResources().getColor(android.R.color.holo_blue_dark));
             }
         }.start();
     }
@@ -192,10 +191,10 @@ public class OTPDialog extends Dialog {
 
             mimeMessage.setSubject("Verify your email for RUET Pay");
             mimeMessage.setText("Hello RUETian,\n" +
-                    "Here is the one time verification code to verify your Email for RUET Pay App: \n" +
+                    "Here is the one time verification code to verify your Email for RUET Pay App: \n\n" +
                     code + "\n\n" +
                     "If you didn’t ask to verify, you can ignore this email.\n\n" +
-                    "Thanks,\n" +
+                    "Happy Journey with RUET Pay,\n" +
                     "RUET Pay team");
 
             Thread thread = new Thread(() -> {

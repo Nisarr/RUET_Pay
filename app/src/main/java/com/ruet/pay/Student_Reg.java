@@ -24,6 +24,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -33,12 +34,10 @@ import java.util.Map;
 public class Student_Reg extends AppCompatActivity {
     TextInputLayout name_layout, reg_layout;
     TextInputEditText email, name, roll, reg, department, session;
-    LottieAnimationView submit;
+    LottieAnimationView submit, success;
     String Email, Pass, Name, Roll, Reg, Dept, Session, userID;
     FirebaseAuth mAuth;
     FirebaseFirestore fstore;
-    ScrollView scrollView;
-    LottieAnimationView success;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +101,7 @@ public class Student_Reg extends AppCompatActivity {
                         reg_layout.setError("Enter your 4 digit Registration No.");
                     }
                     else {
+                        findViewById(R.id.pb).setVisibility(View.VISIBLE);
                         mAuth.createUserWithEmailAndPassword(Email, Pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -110,6 +110,7 @@ public class Student_Reg extends AppCompatActivity {
                                     storeData (Email, Name, Roll, Reg, Dept, Session, userID);
                                 }
                                 else{
+                                    findViewById(R.id.pb).setVisibility(View.GONE);
                                     if (task.getException() instanceof FirebaseNetworkException || task.getException() instanceof NetworkErrorException){
                                         Intent nointernet = new Intent(Student_Reg.this, NoInternet.class);
                                         startActivity(nointernet);
@@ -199,23 +200,29 @@ public class Student_Reg extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
-                    scrollView = findViewById(R.id.scrollView);
+                    findViewById(R.id.pb).setVisibility(View.GONE);
+                    Toast.makeText(Student_Reg.this, "Registration Successful! Please Sign in with your Email and Password.",Toast.LENGTH_SHORT).show();
+                    findViewById(R.id.scrollView).setVisibility(View.GONE);
                     success = findViewById(R.id.success);
-                    scrollView.setVisibility(View.GONE);
                     success.setVisibility(View.VISIBLE);
-                    new CountDownTimer(7000,1000){
+                    success.playAnimation();
+                    success.loop(false);
+                    new CountDownTimer(6000,1000){
                         @Override
                         public void onTick(long millisUntilFinished) {
                         }
 
                         @Override
                         public void onFinish() {
+                            finish();
                             Intent done = new Intent(Student_Reg.this, MainActivity.class);
+                            done.putExtra("popupShown", true);
                             startActivity(done);
                         }
                     }.start();
                 }
                 else{
+                    findViewById(R.id.pb).setVisibility(View.GONE);
                     if (task.getException() instanceof FirebaseNetworkException || task.getException() instanceof NetworkErrorException){
                         Intent nointernet = new Intent(Student_Reg.this, NoInternet.class);
                         startActivity(nointernet);

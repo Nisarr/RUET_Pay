@@ -34,6 +34,13 @@
             android:text="as a Student"
             android:textColor="#800080"
             android:textSize="20sp"></TextView>
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/pb"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -110,7 +117,7 @@
             android:foreground="?attr/selectableItemBackground"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
-            app:lottie_url="https://lottie.host/00a4880c-6739-4d04-af3f-928af95f9be6/pMDujILGr1.json" />
+            app:lottie_rawRes="@raw/continuee" />
 
 
     </LinearLayout>
